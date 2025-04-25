@@ -4,22 +4,28 @@ import { FiShoppingCart, FiUser } from "react-icons/fi";
 
 const Navbar = () => {
   return (
-    <Box
-      as="header"
-      p={1}
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      position="relative" // para posicionar elementos absolutos dentro
-      boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
-    >
+<Box
+  as="header"
+  p={1}
+  display="flex"
+  justifyContent="space-between"
+  alignItems="center"
+  position="fixed"
+  top={0}
+  left={0}
+  right={0}
+  zIndex={10}
+  bg="rgba(255, 255, 255, 0.3)"
+  backdropFilter="blur(8px)"
+  boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+>
       {/* Logo solo (izquierda) en mobile */}
       <Box display={{ base: "block", md: "none" }}>
         <Image src="/images/solo-logo.png" alt="Logo" height="35px" ml={1} />
       </Box>
 
       {/* Nombre centrado en mobile */}
-      <Image
+      {/* <Image
         src="/images/solo-nombre.svg"
         alt="Nombre"
         height="24px"
@@ -28,7 +34,7 @@ const Navbar = () => {
         mt={1}
         transform="translateX(-50%)"
         display={{ base: "block", md: "none" }}
-      />
+      /> */}
 
       {/* Logo completo en desktop */}
       <Image
