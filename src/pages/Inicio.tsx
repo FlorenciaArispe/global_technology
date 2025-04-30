@@ -1,5 +1,8 @@
 import { Box, Image, Link } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import Slider from "react-slick";
+
+const MotionBox = motion(Box);
 
 function Inicio() {
   const settings = {
@@ -24,20 +27,20 @@ function Inicio() {
   ];
 
   return (
-    <Box w="100%" mt={{ base: 0, md: "80px" }} position="relative">
+    <Box w="100%" mt={{ base: "60px", md: "80px" }} position="relative">
       {/* Carrousel */}
       <Box w="100%" display="flex" justifyContent="center">
         <Box
           w="100%"
           maxW="1200px"
-          h={{ base: "550px", md: "700px" }}
+          h={{ base: "650px", md: "700px" }}
           overflow="hidden"
           boxShadow="0 4px 6px rgba(73, 71, 71, 0.4)"
           borderRadius={{ base: 0, md: "20px" }}
         >
           <Slider {...settings}>
             {images.map((src, index) => (
-              <Box key={index} h={{ base: "550px", md: "700px" }} w="100%">
+              <Box key={index} h={{ base: "650px", md: "700px" }} w="100%">
                 <Image
                   src={src}
                   alt={`slide-${index}`}
@@ -49,16 +52,6 @@ function Inicio() {
             ))}
           </Slider>
         </Box>
-      </Box>
-
-      {/* Contenido debajo */}
-      <Box maxW={{ base: "100%", md: "1300px" }} mx="auto">
-        <Box bg="white" h="150px" mt={10}></Box>
-        <Box bg="white" h="150px"></Box>
-        <Box bg="white" h="150px"></Box>
-        <Box bg="white" h="150px"></Box>
-        <Box bg="white" h="150px"></Box>
-        <Box bg="white" h="150px"></Box>
       </Box>
 
       <Link
@@ -79,6 +72,58 @@ function Inicio() {
           transition="all 0.3s ease"
         />
       </Link>
+
+      {/* Sección de cards horizontales */}
+<Box mt={8} px={1}>
+  <Box
+    overflowX="auto"
+    whiteSpace="nowrap"
+    display="flex"
+    gap={6}
+    pb={4}
+    css={{
+      '&::-webkit-scrollbar': {
+        height: '8px',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        background: '#A0AEC0',
+        borderRadius: '4px',
+      },
+    }}
+  >
+    {[
+      "/categories/cat1.jpg",
+      "/categories/cat2.jpg",
+      "/categories/cat3.jpg",
+      "/categories/cat4.jpg",
+      "/categories/cat5.jpg",
+    ].map((src, index) => (
+      <MotionBox
+      key={index}
+      minW="165px"
+      h="183px"
+      flex="0 0 auto"
+      borderRadius="20px"
+      boxShadow="0 4px 12px rgba(0, 0, 0, 0.2)"
+      backgroundImage={`url(${src})`}
+      backgroundSize="cover"
+      backgroundPosition="center"
+      cursor="pointer"
+      animate={{
+        y: [0, -4, 0],
+      }}
+      transition={{
+        duration: 2,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: index * 0.2, // efecto cascada
+      }}
+    />
+    
+    ))}
+  </Box>
+</Box>
+
     </Box>
   );
 }

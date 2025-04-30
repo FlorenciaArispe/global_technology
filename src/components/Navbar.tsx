@@ -15,13 +15,15 @@ const Navbar = () => {
   left={0}
   right={0}
   zIndex={10}
-  bg="rgba(255, 255, 255, 0.3)"
-  backdropFilter="blur(8px)"
+  bg={"#efebe5"}
+  h={"60px"}
+  // bg="rgba(255, 255, 255, 0.3)"
+  // backdropFilter="blur(8px)"
   boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
 >
       {/* Logo solo (izquierda) en mobile */}
       <Box display={{ base: "block", md: "none" }}>
-        <Image src="/images/solo-logo.png" alt="Logo" height="35px" ml={1} />
+        <Image src="/images/COMPLETO-Negro.svg" alt="Logo" height="40px" ml={1} />
       </Box>
 
       {/* Nombre centrado en mobile */}
@@ -38,9 +40,9 @@ const Navbar = () => {
 
       {/* Logo completo en desktop */}
       <Image
-        src="/images/COMPLETO-fondo.png"
+        src="/images/COMPLETO-Negro.svg"
         alt="Logo completo"
-        height="38px"
+        height="46px"
         ml={1}
         display={{ base: "none", md: "block" }}
       />
