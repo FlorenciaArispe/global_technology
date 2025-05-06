@@ -3,6 +3,7 @@ import { MenuMobile } from "./MenuMobile";
 import { FiShoppingCart, FiUser } from "react-icons/fi";
 
 const Navbar = () => {
+
   return (
 <Box
   as="header"
@@ -21,33 +22,18 @@ const Navbar = () => {
   // backdropFilter="blur(8px)"
   boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
 >
-      {/* Logo solo (izquierda) en mobile */}
       <Box display={{ base: "block", md: "none" }}>
-        <Image src="/images/COMPLETO-Negro.svg" alt="Logo" height="40px" ml={1} />
+        <Image src="/images/COMPLETO-Negro.svg" alt="Logo" height="30px" ml={1} />
       </Box>
 
-      {/* Nombre centrado en mobile */}
-      {/* <Image
-        src="/images/solo-nombre.svg"
-        alt="Nombre"
-        height="24px"
-        position="absolute"
-        left="50%"
-        mt={1}
-        transform="translateX(-50%)"
-        display={{ base: "block", md: "none" }}
-      /> */}
-
-      {/* Logo completo en desktop */}
       <Image
         src="/images/COMPLETO-Negro.svg"
         alt="Logo completo"
-        height="46px"
+        height="35px"
         ml={1}
         display={{ base: "none", md: "block" }}
       />
 
-      {/* Menú central en desktop */}
       <Flex
         gap={6}
         align="center"
@@ -61,7 +47,6 @@ const Navbar = () => {
         <Icon as={FiShoppingCart} boxSize={5} cursor="pointer" />
       </Flex>
 
-      {/* Menú hamburguesa en mobile */}
       <Box display={{ base: "block", md: "none" }}>
         <MenuMobile />
       </Box>

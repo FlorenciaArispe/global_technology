@@ -1,5 +1,4 @@
 import {
-  Box,
   IconButton,
   Drawer,
   DrawerOverlay,
@@ -8,26 +7,25 @@ import {
   DrawerBody,
   useDisclosure,
   VStack,
-  Text,
+  Button,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export const MenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <>
-      {/* Botón hamburguesa */}
       <IconButton
         icon={<FiMenu />}
         variant="ghost"
         aria-label="Abrir menú"
         onClick={onOpen}
-        display={{ base: "block", md: "none" }} // solo en mobile
+        display={{ base: "block", md: "none" }}
         fontSize="24px"
       />
-
-      {/* Drawer con transición suave */}
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -36,15 +34,33 @@ export const MenuMobile = () => {
       >
         <DrawerOverlay />
         <DrawerContent>
-          {/* Botón cerrar */}
           <DrawerCloseButton fontSize="18px" mt={1} mr={2} />
 
           <DrawerBody>
             <VStack spacing={6} mt={10} align="start">
-              <Text fontSize="lg">Productos</Text>
-              <Text fontSize="lg">Iniciar sesión</Text>
-              <Text fontSize="lg">Mis pedidos</Text>
-              {/* Agregá más ítems acá */}
+            <Button
+  variant="ghost"
+  color="black"
+  onClick={() => {
+    navigate('/productos');
+    onClose(); 
+  }}
+>
+  Productos
+</Button>
+
+            
+<Button
+  variant="ghost"
+  color="black"
+  onClick={() => {
+    {/*  navigate('/productos'); */}
+    onClose(); 
+  }}
+>
+  Pedidos
+</Button>
+       
             </VStack>
           </DrawerBody>
         </DrawerContent>
