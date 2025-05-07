@@ -88,7 +88,7 @@ function Inicio() {
       </Box>
 
       <Link
-        href="https://wa.me/5491123456789" 
+        href="https://wa.me/2494640858" 
         isExternal
         position="fixed"
         bottom="20px"

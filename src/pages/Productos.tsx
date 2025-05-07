@@ -51,6 +51,63 @@ const Productos = () => {
         </BreadcrumbItem>
       </Breadcrumb>
 
+      <Flex mt={2} wrap="wrap" gap={2}>
+  {selectedCategories.map((id) => {
+    const cat = categories.find((c) => c.id === id);
+    return (
+      <Box
+        key={id}
+        px={3}
+        py={1}
+        bg="gray.100"
+        borderRadius="md"
+        display="flex"
+        alignItems="center"
+        fontSize="sm"
+      >
+        {cat?.name}
+        <IconButton
+          icon={<CloseIcon boxSize={2.5} />}
+          size="xs"
+          ml={2}
+          aria-label="Quitar filtro"
+          onClick={() => handleToggleCategory(id)}
+        />
+      </Box>
+    );
+  })}
+
+  {/* {orderFilter && (
+    <Box
+      px={3}
+      py={1}
+      bg="gray.100"
+      borderRadius="md"
+      display="flex"
+      alignItems="center"
+      fontSize="sm"
+    >
+      {(() => {
+        switch (orderFilter) {
+          case "precioMayor": return "Precio: mayor a menor";
+          case "precioMenor": return "Precio: menor a mayor";
+          case "az": return "A - Z";
+          case "za": return "Z - A";
+          default: return orderFilter;
+        }
+      })()}
+      <IconButton
+        icon={<CloseIcon boxSize={2.5} />}
+        size="xs"
+        ml={2}
+        aria-label="Quitar orden"
+        onClick={() => setOrderFilter('')}
+      />
+    </Box>
+  )} */}
+</Flex>
+
+
       {/* Título y botón Filtrar */}
       <Flex justify="space-between" align="center" mb={5} >
         <Heading size="md">Productos</Heading>

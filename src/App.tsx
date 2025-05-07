@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Footer from './components/Footer';
 import Productos from './pages/Productos';
 import ScrollToTop from './components/ScrollToTop';
+import DetalleProducto from './components/DetalleProducto';
 
 
 
@@ -23,6 +24,8 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/productos" element={<Productos />} />
+            <Route path="/productos/:id" element={<DetalleProducto />} />
+
           </Routes>
 
           <Footer />
