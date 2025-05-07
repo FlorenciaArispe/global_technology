@@ -19,7 +19,15 @@ const Footer = () => {
           {/* Columna 2: Enlaces rápidos */}
           <Stack spacing={4}>
             <Text fontSize="lg" fontWeight="semibold">Enlaces rápidos</Text>
-            <Link href="#" _hover={{ textDecoration: 'underline' }}>Inicio</Link>
+            <Link
+            textAlign={"left"}
+  as="button"
+  onClick={() => {
+    navigate('/');
+  }}
+  _hover={{ textDecoration: 'underline' }}
+>
+Inicio</Link>
             <Link
             textAlign={"left"}
   as="button"
@@ -30,8 +38,18 @@ const Footer = () => {
 >
   Productos
 </Link>
+<Link
+            textAlign={"left"}
+  as="button"
+  onClick={() => {
+    navigate('/plan-canje');
+  }}
+  _hover={{ textDecoration: 'underline' }}
+>
+Plan Canje</Link>
+
             <Link href="#" _hover={{ textDecoration: 'underline' }}>Contacto</Link>
-            <Link href="#" _hover={{ textDecoration: 'underline' }}>Blog</Link>
+          
           </Stack>
 
           {/* Columna 3: Redes sociales */}
@@ -47,26 +65,6 @@ const Footer = () => {
                 aria-label="Facebook"
                 color="white"
                 _hover={{ bg: "facebook.500" }}
-              />
-              <IconButton
-                as="a"
-                href="https://www.twitter.com"
-                target="_blank"
-                icon={<FaTwitter />}
-                variant="ghost"
-                aria-label="Twitter"
-                color="white"
-                _hover={{ bg: "twitter.400" }}
-              />
-              <IconButton
-                as="a"
-                href="https://www.linkedin.com"
-                target="_blank"
-                icon={<FaLinkedin />}
-                variant="ghost"
-                aria-label="LinkedIn"
-                color="white"
-                _hover={{ bg: "linkedin.500" }}
               />
               <IconButton
                 as="a"

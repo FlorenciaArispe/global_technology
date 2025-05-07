@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Heading,
@@ -10,8 +10,6 @@ import {
   BreadcrumbLink,
   IconButton,
   Text,
-  VStack,
-  Checkbox,
   Input,
   Select,
 } from '@chakra-ui/react';
@@ -19,11 +17,30 @@ import { ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { IoFilter } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
 import { productsAll, categories } from '../data';
+import { useLocation } from 'react-router-dom';
 
 const Productos = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [filteredProducts, setFilteredProducts] = useState(productsAll);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoriaNombre = params.get('categoria');
+  
+    if (categoriaNombre) {
+      const categoria = categories.find(cat => cat.name.toLowerCase() === categoriaNombre.toLowerCase());
+      if (categoria) {
+        const filtered = productsAll.filter(product => product.category === categoria.id);
+        setFilteredProducts(filtered);
+        setSelectedCategories([categoria.id]);
+      }
+    }
+  }, [location.search]);
+  
+
 
   const handleToggleCategory = (categoryId: number) => {
     const updatedCategories = selectedCategories.includes(categoryId)
@@ -77,38 +94,7 @@ const Productos = () => {
     );
   })}
 
-  {/* {orderFilter && (
-    <Box
-      px={3}
-      py={1}
-      bg="gray.100"
-      borderRadius="md"
-      display="flex"
-      alignItems="center"
-      fontSize="sm"
-    >
-      {(() => {
-        switch (orderFilter) {
-          case "precioMayor": return "Precio: mayor a menor";
-          case "precioMenor": return "Precio: menor a mayor";
-          case "az": return "A - Z";
-          case "za": return "Z - A";
-          default: return orderFilter;
-        }
-      })()}
-      <IconButton
-        icon={<CloseIcon boxSize={2.5} />}
-        size="xs"
-        ml={2}
-        aria-label="Quitar orden"
-        onClick={() => setOrderFilter('')}
-      />
-    </Box>
-  )} */}
 </Flex>
-
-
-      {/* Título y botón Filtrar */}
       <Flex justify="space-between" align="center" mb={5} >
         <Heading size="md">Productos</Heading>
         <Button
@@ -130,15 +116,12 @@ const Productos = () => {
           Filtrar
         </Button>
       </Flex>
-
-      {/* Grid de productos */}
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={4} mb={5}>
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </SimpleGrid>
 
-      {/* Overlay de filtros */}
       {isFilterOpen && (
         <Box
           position="fixed"
@@ -153,7 +136,7 @@ const Productos = () => {
           overflowY="auto"
         >
           <Flex justify="space-between" align="center" mb={6}>
-            <Box w="32px" /> {/* Placeholder para centrar el texto */}
+            <Box w="32px" />
             <Heading size="md" textAlign="center">FILTROS</Heading>
             <IconButton
               aria-label="Cerrar filtro"
@@ -195,7 +178,6 @@ const Productos = () => {
     ))}
   </Flex>
 </Box>
-
 
 <Box>
   <Text fontWeight="bold" mb={2}>Precio</Text>

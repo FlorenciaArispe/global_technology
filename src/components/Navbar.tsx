@@ -23,7 +23,7 @@ const Navbar = () => {
   boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
 >
       <Box display={{ base: "block", md: "none" }}>
-        <Image src="/images/COMPLETO-Negro.svg" alt="Logo" height="30px" ml={1} />
+        <Image src="/images/logo_con_fondo.png" alt="Logo" height="50px" />
       </Box>
 
       <Image

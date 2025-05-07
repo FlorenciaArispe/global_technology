@@ -5,7 +5,7 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const rutasQueScrollean = ['/productos', '/producto']; 
+    const rutasQueScrollean = ['/productos', '/producto', '/plan-canje']; 
 
     const debeScrollear = rutasQueScrollean.some((ruta) =>
       pathname.startsWith(ruta)

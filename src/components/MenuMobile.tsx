@@ -8,6 +8,8 @@ import {
   useDisclosure,
   VStack,
   Button,
+  Box,
+  Divider,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +39,17 @@ export const MenuMobile = () => {
           <DrawerCloseButton fontSize="18px" mt={1} mr={2} />
 
           <DrawerBody>
-            <VStack spacing={6} mt={10} align="start">
+            <VStack spacing={3} mt={10} align="start">
+            <Button
+  variant="ghost"
+  color="black"
+  onClick={() => {
+    navigate('/');
+    onClose(); 
+  }}
+>
+  Inicio
+</Button>
             <Button
   variant="ghost"
   color="black"
@@ -49,17 +61,78 @@ export const MenuMobile = () => {
   Productos
 </Button>
 
+<Button
+  variant="ghost"
+  color="black"
+    fontWeight="normal"
+  onClick={() => {
+    navigate('/productos?categoria=Sellados');
+    onClose();
+  }}
+>
+  Sellados
+</Button>
+<Button
+  variant="ghost"
+  color="black"
+    fontWeight="normal"
+  onClick={() => {
+    navigate('/productos?categoria=Usados');
+    onClose();
+  }}
+>
+  Usados
+</Button>
+
+<Button
+  variant="ghost"
+  color="black"
+    fontWeight="normal"
+  onClick={() => {
+    navigate('/productos?categoria=Accesorios');
+    onClose();
+  }}
+>
+  Accesorios
+</Button>
+
+<Button
+  variant="ghost"
+  color="black"
+  onClick={() => {
+    navigate('/plan-canje');
+    onClose(); 
+  }}
+>
+  Plan Canje
+</Button>
+
             
 <Button
   variant="ghost"
   color="black"
   onClick={() => {
-    {/*  navigate('/productos'); */}
+    navigate('/contacto');
     onClose(); 
   }}
 >
-  Pedidos
+  Contacto
 </Button>
+
+<Box w="100%" pt={5}>
+                <Divider />
+                <Button
+                  variant="ghost"
+                  color="black"
+                  mt={4}
+                  onClick={() => {
+                    navigate('/login');
+                    onClose();
+                  }}
+                >
+                  Iniciar sesión
+                </Button>
+              </Box>
        
             </VStack>
           </DrawerBody>
