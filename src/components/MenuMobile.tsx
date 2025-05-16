@@ -40,86 +40,86 @@ export const MenuMobile = () => {
 
           <DrawerBody>
             <VStack spacing={3} mt={10} align="start">
-            <Button
-  variant="ghost"
-  color="black"
-  onClick={() => {
-    navigate('/');
-    onClose(); 
-  }}
->
-  Inicio
-</Button>
-            <Button
-  variant="ghost"
-  color="black"
-  onClick={() => {
-    navigate('/productos');
-    onClose(); 
-  }}
->
-  Productos
-</Button>
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/');
+                  onClose();
+                }}
+              >
+                Inicio
+              </Button>
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/productos');
+                  onClose();
+                }}
+              >
+                Productos
+              </Button>
 
-<Button
-  variant="ghost"
-  color="black"
-    fontWeight="normal"
-  onClick={() => {
-    navigate('/productos?categoria=Sellados');
-    onClose();
-  }}
->
-  Sellados
-</Button>
-<Button
-  variant="ghost"
-  color="black"
-    fontWeight="normal"
-  onClick={() => {
-    navigate('/productos?categoria=Usados');
-    onClose();
-  }}
->
-  Usados
-</Button>
+              <Button
+                variant="ghost"
+                color="black"
+                fontWeight="normal"
+                onClick={() => {
+                  navigate('/productos?categoria=Sellados');
+                  onClose();
+                }}
+              >
+                Sellados
+              </Button>
+              <Button
+                variant="ghost"
+                color="black"
+                fontWeight="normal"
+                onClick={() => {
+                  navigate('/productos?categoria=Usados');
+                  onClose();
+                }}
+              >
+                Usados
+              </Button>
 
-<Button
-  variant="ghost"
-  color="black"
-    fontWeight="normal"
-  onClick={() => {
-    navigate('/productos?categoria=Accesorios');
-    onClose();
-  }}
->
-  Accesorios
-</Button>
+              <Button
+                variant="ghost"
+                color="black"
+                fontWeight="normal"
+                onClick={() => {
+                  navigate('/productos?categoria=Accesorios');
+                  onClose();
+                }}
+              >
+                Accesorios
+              </Button>
 
-<Button
-  variant="ghost"
-  color="black"
-  onClick={() => {
-    navigate('/plan-canje');
-    onClose(); 
-  }}
->
-  Plan Canje
-</Button>
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/plan-canje');
+                  onClose();
+                }}
+              >
+                Plan Canje
+              </Button>
 
-            
-<Button
-  variant="ghost"
-  color="black"
-  onClick={() => {
-    navigate('/contacto');
-    onClose(); 
-  }}
->
-  Contacto
-</Button>
 
-<Box w="100%" pt={5}>
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/contacto');
+                  onClose();
+                }}
+              >
+                Contacto
+              </Button>
+
+              <Box w="100%" pt={5}>
                 <Divider />
                 <Button
                   variant="ghost"
@@ -133,7 +133,7 @@ export const MenuMobile = () => {
                   Iniciar sesión
                 </Button>
               </Box>
-       
+
             </VStack>
           </DrawerBody>
         </DrawerContent>
