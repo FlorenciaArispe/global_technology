@@ -1,6 +1,5 @@
-import { Box, Button, HStack, Icon, Image, Link, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Icon, Image, Link, SimpleGrid, Slider, Stack, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import Slider from "react-slick";
 import { FaTruck } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "../components/ProductCard";
@@ -60,51 +59,17 @@ function Inicio() {
 
 
   return (
-    <Box w="100%" mt={{ base: "60px", md: "80px" }} position="relative">
-      {/* Carrousel */}
-      <Box w="100%" display="flex" justifyContent="center">
-        <Box
-          w="100%"
-          maxW="1200px"
-          h={{ base: "650px", md: "700px" }}
-          overflow="hidden"
-          boxShadow="0 4px 6px rgba(73, 71, 71, 0.4)"
-          borderRadius={{ base: 0, md: "20px" }}
-        >
-          <Slider {...settings}>
-            {images.map((src, index) => (
-              <Box key={index} h={{ base: "650px", md: "700px" }} w="100%">
-                <Image
-                  src={src}
-                  alt={`slide-${index}`}
-                  objectFit="cover"
-                  w="100%"
-                  h="100%"
-                />
-              </Box>
-            ))}
-          </Slider>
-        </Box>
-      </Box>
-
-      <Link
-        href="https://wa.me/2494640858" 
-        isExternal
-        position="fixed"
-        bottom="20px"
-        right="20px"
-        zIndex="1000"
-      >
-        <Image
-          src="/whatsapp.svg"
-          alt="WhatsApp"
-          boxSize="60px"
-          borderRadius="full"
-          boxShadow="0 4px 6px rgba(0, 0, 0, 0.3)"
-          _hover={{ transform: "scale(1.1)" }}
-          transition="all 0.3s ease"
+    <Box w="100%" position="relative">
+   <Box bg="rgb(248, 248, 248)" minHeight="100vh" >
+        {/* Imagen arriba de todo */}
+        <Image 
+          src="/images/portada2.png" 
+          alt="Imagen descriptiva"
+          objectFit="cover"
+          w="100%"  
+         
         />
-      </Link>
+
 
       <Box mt={8} px={1}>
       {/* Contenedor scrollable */}
@@ -162,6 +127,125 @@ function Inicio() {
         ))}
       </HStack>
     </Box>
+
+         <Link
+        href="https://wa.me/2494640858" 
+        isExternal
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        zIndex="1000"
+      >
+        <Image
+          src="/whatsapp.svg"
+          alt="WhatsApp"
+          boxSize="60px"
+          borderRadius="full"
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.3)"
+          _hover={{ transform: "scale(1.1)" }}
+          transition="all 0.3s ease"
+        />
+      </Link>
+     
+
+       <Stack direction="column" spacing={4} p={4}>
+           <Text mt={2} fontSize={"18px"} fontWeight={700}> Productos</Text>
+          <Flex direction="row" justify="space-between" align="center" wrap="wrap">
+            {/* Botón Todos */}
+            <Button 
+              fontWeight={300}
+              fontSize={"15px"}
+            //  variant={filtro === 'todos' ? 'solid' : 'outline'} // Cambia el fondo si está seleccionado
+              color={'gray.600'}
+              //bg={filtro === 'todos' ? '#ccc' : 'transparent'}
+              //borderColor={filtro === 'todos' ? 'gray.100' : '#ccc'}
+              //onClick={() => setFiltro('todos')} 
+              flex="1" 
+              _hover={{ borderColor: 'white' }}
+              _active={{ borderColor: 'white' }}
+            >
+              Todos
+            </Button>
+
+            {/* Botón Sellados */}
+            <Button 
+              fontWeight={300}
+              fontSize={"15px"}
+             // variant={filtro === 'nuevos' ? 'solid' : 'outline'}
+              color={'gray.600'}
+              //bg={filtro === 'nuevos' ? '#ccc' : 'transparent'}
+              //borderColor={filtro === 'nuevos' ? 'gray.100' : '#ccc'}
+              //onClick={() => setFiltro('nuevos')} 
+              flex="1" 
+              m={1}
+              _hover={{ borderColor: 'white' }}
+              _active={{ borderColor: 'white' }}
+            >
+              Sellados
+            </Button>
+
+            {/* Botón Usados */}
+            <Button 
+              fontWeight={300}
+              fontSize={"15px"}
+              //variant={filtro === 'usados' ? 'solid' : 'outline'}
+             color={'gray.600'}
+              //bg={filtro === 'usados' ? '#ccc' : 'transparent'}
+              //borderColor={filtro === 'usados' ? 'gray.100' : '#ccc'}
+              //onClick={() => setFiltro('usados')} 
+              flex="1" 
+              m={1}
+              _hover={{ borderColor: 'white' }}
+              _active={{ borderColor: 'white' }}
+            >
+              Usados
+            </Button>
+
+            {/* Botón Accesorios */}
+            <Button 
+              fontWeight={300}
+              fontSize={"15px"}
+             // variant={filtro === 'accesorios' ? 'solid' : 'outline'}
+             color={'gray.600'}
+              //bg={filtro === 'accesorios' ? '#ccc' : 'transparent'}
+              //borderColor={filtro === 'accesorios' ? 'gray.100' : '#ccc'}
+              //onClick={() => setFiltro('accesorios')} 
+              flex="1" 
+              _hover={{ borderColor: 'white' }}
+              _active={{ borderColor: 'white' }}
+            >
+              Accesorios
+            </Button>
+          </Flex>
+        </Stack>
+
+        {/* Grid de productos */}
+        {/* <SimpleGrid 
+          columns={{ base: 2, md: 4 }}  
+          spacing={4} 
+          p={4}
+        >
+          {productosFiltrados.length === 0 ? (
+            <Box textAlign="center" color="gray.500" fontSize="lg">
+              Producto no encontrado
+            </Box>
+          ) : (
+            productosFiltrados.map((producto) => (
+              <CardProduct key={producto.id} producto={producto} modelos={modelos} />
+            ))
+          )}
+        </SimpleGrid> */}
+      </Box>
+
+
+
+
+
+      {/* DISEÑO ANTERIOR */}
+
+
+     
+
 
 <Box
   mt={6}

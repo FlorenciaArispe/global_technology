@@ -30,7 +30,7 @@ export const MenuMobile = () => {
       />
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement="left"
         onClose={onClose}
         size="full"
       >
