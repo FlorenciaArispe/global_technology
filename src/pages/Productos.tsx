@@ -57,7 +57,7 @@ const Productos = () => {
   };
 
   return (
-    <Box w="100%" px={4} mt={{ base: "65px", md: "80px" }}>
+    <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
       {/* Breadcrumb */}
       <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
         <BreadcrumbItem>

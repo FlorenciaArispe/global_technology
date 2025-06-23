@@ -308,10 +308,6 @@ function Inicio() {
    
   </Box>
     </Box>
-
-    
-
-
     </Box>
   );
 }

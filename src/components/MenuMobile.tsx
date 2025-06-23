@@ -119,7 +119,7 @@ export const MenuMobile = () => {
                 Contacto
               </Button>
 
-              <Box w="100%" pt={5}>
+              {/* <Box w="100%" pt={5}>
                 <Divider />
                 <Button
                   variant="ghost"
@@ -132,7 +132,7 @@ export const MenuMobile = () => {
                 >
                   Iniciar sesión
                 </Button>
-              </Box>
+              </Box> */}
 
             </VStack>
           </DrawerBody>
