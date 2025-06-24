@@ -10,9 +10,11 @@ import {
     BreadcrumbItem,
     BreadcrumbLink,
     Heading,
+    Link,
   } from "@chakra-ui/react";
   import { ChevronRightIcon } from "@chakra-ui/icons";
   import { useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
   
   const Contacto = () => {
     const [nombre, setNombre] = useState("");
@@ -49,7 +51,25 @@ import {
     };
   
     return (
-      <Box w="100%" px={4} mt={{ base: "65px", md: "80px" }} maxW="700px" mx="auto">
+      <>
+      <Link
+        href="https://wa.me/message/5RCBRGOHGKPVL1"
+        isExternal
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        zIndex="1000"
+      >
+        <Box
+          as={FaWhatsapp}
+          boxSize="60px"
+          color="#25D366" // verde oficial WhatsApp
+          _hover={{ transform: "scale(1.1)" }}
+          transition="all 0.3s ease"
+        />
+      </Link>
+
+       <Box w="100%" px={4} mt={{ base: "65px", md: "80px" }} maxW="700px" mx="auto">
         {/* Breadcrumb */}
         <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={6}>
           <BreadcrumbItem>
@@ -103,6 +123,8 @@ import {
           </VStack>
         </Box>
       </Box>
+      </>
+     
     );
   };
   

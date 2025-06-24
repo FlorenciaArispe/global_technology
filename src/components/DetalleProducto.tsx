@@ -22,10 +22,11 @@ import {
   ModalCloseButton,
   ModalBody,
   useDisclosure,
-  IconButton
+  IconButton,
+  Link
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { FaStore, FaTruck } from 'react-icons/fa';
+import { FaStore, FaTruck, FaWhatsapp } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import Slider from 'react-slick';
 import { productsAll } from '../data';
@@ -63,6 +64,23 @@ const DetalleProducto = () => {
 
   return (
     <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
+
+      <Link
+              href="https://wa.me/message/5RCBRGOHGKPVL1"
+              isExternal
+              position="fixed"
+              bottom="20px"
+              right="20px"
+              zIndex="1000"
+            >
+              <Box
+                as={FaWhatsapp}
+                boxSize="60px"
+                color="#25D366" // verde oficial WhatsApp
+                _hover={{ transform: "scale(1.1)" }}
+                transition="all 0.3s ease"
+              />
+            </Link> 
       {/* Breadcrumb */}
       <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
         <BreadcrumbItem>
@@ -76,8 +94,7 @@ const DetalleProducto = () => {
         </BreadcrumbItem>
       </Breadcrumb>
 
-      {/* Nombre del producto */}
-      <Heading size="lg" mb={4}>{producto.name}</Heading>
+ 
 
       {/* Galería de imágenes */}
       <Box maxW="400px" mb={6}>
@@ -105,40 +122,85 @@ const DetalleProducto = () => {
         )}
       </Box>
 
-      {/* Modal para imagen ampliada */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-        <ModalOverlay bg="blackAlpha.700" />
-        <ModalContent bg="transparent" boxShadow="none">
-        <ModalCloseButton color="white" top={4} right={4} position="fixed" zIndex={9999} />
-          <ModalBody display="flex" alignItems="center" justifyContent="center" position="relative">
-            <IconButton
-              icon={<IoIosArrowBack />}
-              position="absolute"
-              left={2}
-              top="50%"
-              transform="translateY(-50%)"
-              onClick={handlePrev}
-              aria-label="Anterior"
-              colorScheme="whiteAlpha"
-            />
-            <Image src={producto.images[modalIndex]} maxH="80vh" borderRadius="md" />
-            <IconButton
-              icon={<IoIosArrowForward />}
-              position="absolute"
-              right={2}
-              top="50%"
-              transform="translateY(-50%)"
-              onClick={handleNext}
-              aria-label="Siguiente"
-              colorScheme="whiteAlpha"
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+<Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+  <ModalOverlay bg="blackAlpha.700" />
+  <ModalContent bg="transparent" boxShadow="none">
+ <ModalCloseButton color="black" right={6} zIndex={2} />
+    <ModalBody display="flex" alignItems="center" justifyContent="center" position="relative">
+      <IconButton
+        icon={<IoIosArrowBack />}
+        position="absolute"
+        left={2}
+        top="50%"
+        transform="translateY(-50%)"
+        onClick={handlePrev}
+        aria-label="Anterior"
+        colorScheme="whiteAlpha"
+      />
+      <Image src={producto.images[modalIndex]} maxH="80vh" borderRadius="md" />
+      <IconButton
+        icon={<IoIosArrowForward />}
+        position="absolute"
+        right={2}
+        top="50%"
+        transform="translateY(-50%)"
+        onClick={handleNext}
+        aria-label="Siguiente"
+        colorScheme="whiteAlpha"
+      />
+    </ModalBody>
+  </ModalContent>
+</Modal>
+
 
       {/* Precio y botón */}
+       <Text fontSize="2xl" fontWeight="bold" mb={2}>{producto.name}</Text>
       <Text fontSize="2xl" color="green.500" fontWeight="bold" mb={2}>${producto.price}</Text>
-      <Button colorScheme="teal" mb={6}>Agregar al carrito</Button>
+<Button
+  as="a"
+   href={`https://wa.me/5492914197099?text=${encodeURIComponent(`*¡Hola Global Technology!*\nQuiero consultar sobre *${producto.name} - ${producto.capacity}*`)}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  leftIcon={<FaWhatsapp />}
+  bg="#25D366"
+  color="white"
+  _hover={{ bg: "#1EBE5D" }}
+  mb={6}
+>
+  Consultas
+</Button>
+
+
+      {/* Detalles del producto */}
+      <Box mb={4}>
+        <Heading size="md" mb={3}>Detalles del equipo</Heading>
+        <Table variant="simple">
+          <Tbody>
+            <Tr>
+              <Td fontWeight="bold">Modelo</Td>
+              <Td>{producto.name}</Td>
+            </Tr>
+            <Tr>
+              <Td fontWeight="bold">Colores</Td>
+              <Td>{producto.colors?.join(', ') || 'No especificado'}</Td>
+          
+            </Tr>
+            <Tr>
+              <Td fontWeight="bold">Capacidad</Td>
+              <Td>{producto.capacity || 'No especificada'}</Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </Box>
+
+         {/* Garantía */}
+      {producto.category === 2 && (
+        <Text mt={4} mb={4} fontStyle="italic" color="gray.600">
+          Garantía Apple oficial de un año
+        </Text>
+      )}
+
+
 
       {/* Info de envío y retiro */}
       <Flex direction={{ base: 'column', md: 'row' }} gap={6} mb={10}>
@@ -159,34 +221,8 @@ const DetalleProducto = () => {
         </Box>
       </Flex>
 
-      {/* Detalles del producto */}
-      <Box mb={4}>
-        <Heading size="md" mb={3}>Detalles del producto</Heading>
-        <Table variant="simple">
-          <Tbody>
-            <Tr>
-              <Td fontWeight="bold">Modelo</Td>
-              <Td>{producto.name}</Td>
-            </Tr>
-            <Tr>
-              <Td fontWeight="bold">Colores</Td>
-              <Td>{producto.colors?.join(', ') || 'No especificado'}</Td>
-          
-            </Tr>
-            <Tr>
-              <Td fontWeight="bold">Capacidad</Td>
-              <Td>{producto.capacity || 'No especificada'}</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </Box>
 
-      {/* Garantía */}
-      {producto.category === 2 && (
-        <Text mt={4} mb={4} fontStyle="italic" color="gray.600">
-          Garantía Apple oficial de un año
-        </Text>
-      )}
+   
     </Box>
   );
 };

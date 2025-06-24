@@ -32,7 +32,7 @@ const ProductCard = ({ product }: any) => {
         ${product.price}
       </Text>
     </Stack>
-    <Box p={4}>
+    {/* <Box p={4}>
       <Button
         size="sm"
         colorScheme="teal"
@@ -42,7 +42,7 @@ const ProductCard = ({ product }: any) => {
       >
         Ver más
       </Button>
-    </Box>
+    </Box> */}
   </Box>
 </Link>
 

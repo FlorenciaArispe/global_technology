@@ -12,12 +12,14 @@ import {
   Text,
   Input,
   Select,
+  Link,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { IoFilter } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
 import { productsAll, categories } from '../data';
 import { useLocation } from 'react-router-dom';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const Productos = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -58,6 +60,24 @@ const Productos = () => {
 
   return (
     <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
+      <Link
+              href="https://wa.me/message/5RCBRGOHGKPVL1"
+              isExternal
+              position="fixed"
+              bottom="20px"
+              right="20px"
+              zIndex="1000"
+            >
+              <Box
+                as={FaWhatsapp}
+                boxSize="60px"
+                color="#25D366" // verde oficial WhatsApp
+                _hover={{ transform: "scale(1.1)" }}
+                transition="all 0.3s ease"
+              />
+            </Link>
+
+
       {/* Breadcrumb */}
       <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
         <BreadcrumbItem>
