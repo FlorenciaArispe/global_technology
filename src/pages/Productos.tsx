@@ -17,31 +17,57 @@ import {
 import { ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { IoFilter } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
-import { productsAll, categories } from '../data';
 import { useLocation } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
+import { getProductos } from '../supabase/productos.service';
+import { getCategorias } from '../supabase/categorias.service';
 
 const Productos = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [categorias, setCategorias] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState(productsAll);
+const [productos, setProductos] = useState<any[]>([]);
+const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+
+useEffect(() => {
+  (async () => {
+    try {
+      const data = await getCategorias();
+      setCategorias(data);
+      console.log(data)
+    } catch (error) {
+      console.error("Error al obtener categorías:", error);
+    }
+  })();
+}, []);
+
+useEffect(() => {
+  (async () => {
+    try {
+      const data = await getProductos();
+      setProductos(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error("Error al obtener productos:", error);
+    }
+  })();
+}, []);
 
   const location = useLocation();
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categoriaNombre = params.get('categoria');
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const categoriaNombre = params.get('categoria');
   
-    if (categoriaNombre) {
-      const categoria = categories.find(cat => cat.name.toLowerCase() === categoriaNombre.toLowerCase());
-      if (categoria) {
-        const filtered = productsAll.filter(product => product.category === categoria.id);
-        setFilteredProducts(filtered);
-        setSelectedCategories([categoria.id]);
-      }
-    }
-  }, [location.search]);
-  
+  //   if (categoriaNombre) {
+  //     const categoria = categories.find(cat => cat.name.toLowerCase() === categoriaNombre.toLowerCase());
+  //     if (categoria) {
+  //       const filtered = productsAll.filter(product => product.category === categoria.id);
+  //       setFilteredProducts(filtered);
+  //       setSelectedCategories([categoria.id]);
+  //     }
+  //   }
+  // }, [location.search]);
 
 
   const handleToggleCategory = (categoryId: number) => {
@@ -51,12 +77,18 @@ const Productos = () => {
 
     setSelectedCategories(updatedCategories);
 
-    const filtered = productsAll.filter((product) =>
-      updatedCategories.length === 0 ? true : updatedCategories.includes(product.category)
-    );
+  const filtered = productos.filter((product) =>
+  updatedCategories.length === 0 ? true : updatedCategories.includes(product.categoria)
+);
 
     setFilteredProducts(filtered);
   };
+
+
+
+
+
+
 
   return (
     <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
@@ -90,7 +122,7 @@ const Productos = () => {
 
       <Flex mt={2} wrap="wrap" gap={2}>
   {selectedCategories.map((id) => {
-    const cat = categories.find((c) => c.id === id);
+    const cat = categorias.find((c) => c.id === id);
     return (
       <Box
         key={id}
@@ -102,7 +134,7 @@ const Productos = () => {
         alignItems="center"
         fontSize="sm"
       >
-        {cat?.name}
+        {cat?.nombre}
         <IconButton
           icon={<CloseIcon boxSize={2.5} />}
           size="xs"
@@ -180,22 +212,22 @@ const Productos = () => {
 <Box mb={6}>
   <Text fontWeight="bold" mb={4}>Categorías</Text>
   <Flex gap={2} wrap="wrap">
-    {categories.map((cat) => (
-      <Button
-        key={cat.id}
-        size="sm"
-        variant="outline"
-        colorScheme="blackAlpha"
-        onClick={() => {
-          const filtered = productsAll.filter(product => product.category === cat.id);
-          setFilteredProducts(filtered);
-          setSelectedCategories([cat.id]);
-          setIsFilterOpen(false);
-        }}
-      >
-        {cat.name}
-      </Button>
-    ))}
+    {categorias.map((cat) => 
+     <Button
+    key={cat.id}
+    size="sm"
+    variant="outline"
+    colorScheme="blackAlpha"
+    onClick={() => {
+      const filtered = productos.filter(product => product.categoria === cat.id);
+      setFilteredProducts(filtered);
+      setSelectedCategories([cat.id]);
+      setIsFilterOpen(false);
+    }}
+  >
+    {cat.nombre}
+  </Button>
+    )}
   </Flex>
 </Box>
 

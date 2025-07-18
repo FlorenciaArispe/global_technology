@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Icon, Image, Link, SimpleGrid, Slider, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Icon, Image, Link, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FaMoneyBillWave, FaShieldAlt, FaStore, FaTruck, FaWhatsapp } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
@@ -6,8 +6,7 @@ import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { productsDestacados } from "../data";
 import supabase from "../supabase/supabase.service";
-import { fetchProductos } from "../services/fetchData";
-
+import { getProductos, getProductosDestacados } from "../supabase/productos.service";
 
 const MotionBox = motion(Box);
 
@@ -25,22 +24,42 @@ const images = [
 function Inicio() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-      const productosChannel = supabase
-        .channel('productos')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'productos' }, async () => {
-          const productosData = await fetchProductos()
-          console.log("PRODUCTOS ACAAAA",productosData)
-          // setProductos(productosData)
-        })
-        .subscribe()
-  
-  
-  
-      return () => {
-        productosChannel.unsubscribe()
+  const [productos, setProductos] =useState([])
+  const [productosDestacados, setProductosDestacados] = useState([]);
+
+useEffect(() => {
+  // Trae productos y destacados al inicio y ante cambios
+  const fetchProductos = async () => {
+    const todos = await getProductos();
+    setProductos(todos);
+
+    const destacados = await getProductosDestacados();
+    console.log("DESTACADOS", destacados)
+    setProductosDestacados(destacados);
+  };
+
+  // Llamada inicial
+  fetchProductos();
+
+  // Escuchar cambios en la tabla
+  const productosChannel = supabase
+    .channel('productos')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'productos' },
+      async () => {
+        console.log("CAMBIO DETECTADO");
+        await fetchProductos();
       }
-    }, [])
+    )
+    .subscribe();
+
+  return () => {
+    productosChannel.unsubscribe();
+  };
+}, []);
+
+
 
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -69,19 +88,18 @@ function Inicio() {
 
   return (
     <Box w="100%" position="relative">
+    
    <Box bg="rgb(248, 248, 248)" minHeight="100vh" >
-        {/* Imagen arriba de todo */}
         <Image 
           src="/images/portada2.png" 
           alt="Imagen descriptiva"
           objectFit="cover"
           w="100%"  
-         
+        
         />
 
-
       <Box mt={8} px={1}>
-      {/* Contenedor scrollable */}
+
       <Box
         ref={scrollRef}
         overflowX="auto"
@@ -90,10 +108,10 @@ function Inicio() {
         gap={6}
         pb={4}
         css={{
-          scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none", // IE/Edge
+          scrollbarWidth: "none", 
+          msOverflowStyle: "none", 
           "&::-webkit-scrollbar": {
-            display: "none", // Chrome/Safari
+            display: "none", 
           },
         }}
       >
@@ -121,8 +139,6 @@ function Inicio() {
           />
         ))}
       </Box>
-
-      {/* Stepper de puntitos */}
       <HStack justify="center" mt={3} spacing={2}>
         {images.map((_, index) => (
           <Box
@@ -148,7 +164,7 @@ function Inicio() {
   <Box
     as={FaWhatsapp}
     boxSize="60px"
-    color="#25D366" // verde oficial WhatsApp
+    color="#25D366" 
     _hover={{ transform: "scale(1.1)" }}
     transition="all 0.3s ease"
   />
@@ -222,7 +238,7 @@ function Inicio() {
         <Box p={8}>
   <Text mb={4} fontSize={"18px"} fontWeight={700}> Productos destacados</Text>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
-        {productsDestacados.map((product) => (
+        {productosDestacados.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </SimpleGrid>
