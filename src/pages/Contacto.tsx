@@ -15,6 +15,7 @@ import {
   import { ChevronRightIcon } from "@chakra-ui/icons";
   import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { Link as RouterLink } from 'react-router-dom';
   
   const Contacto = () => {
     const [nombre, setNombre] = useState("");
@@ -69,16 +70,16 @@ import { FaWhatsapp } from "react-icons/fa";
         />
       </Link>
 
-       <Box w="100%" px={4} mt={{ base: "65px", md: "80px" }} maxW="700px" mx="auto">
-        {/* Breadcrumb */}
-        <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={6}>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="/contacto">Contacto</BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
+       <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }} maxW="700px" mx="auto">
+   
+<Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={6}>
+  <BreadcrumbItem>
+    <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem isCurrentPage>
+    <BreadcrumbLink as={RouterLink} to="/contacto">Contacto</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
                 <Heading size="md">Contacto</Heading>
         
   

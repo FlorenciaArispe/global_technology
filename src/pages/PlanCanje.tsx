@@ -14,6 +14,7 @@ import {
   } from "@chakra-ui/react";
   import { ChevronRightIcon, InfoIcon } from "@chakra-ui/icons";
 import { FaWhatsapp } from "react-icons/fa";
+import { Link as RouterLink } from 'react-router-dom';
   
   const PlanCanje = () => {
     return (
@@ -34,15 +35,15 @@ import { FaWhatsapp } from "react-icons/fa";
                   transition="all 0.3s ease"
                 />
               </Link>
-        <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href="/plan-canje">Plan Canje</BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
-  
+<Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
+  <BreadcrumbItem>
+    <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem isCurrentPage>
+    <BreadcrumbLink as={RouterLink} to="/plan-canje">Plan Canje</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
+
         <Heading size="md" mb={4}>Plan Canje</Heading>
   
         <Image src="/images/plan-canje.png" alt="Plan Canje" w="100%" objectFit="cover" mb={6} />

@@ -2,17 +2,16 @@ import { Box, Image, Text, Stack } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }: any) => {
-  // Armar nombre dinámico
+
   const nombre =
     product.categoria === 1 || product.categoria === 2
       ? `${product.modelo || ''} ${product.capacidad || ''}`.trim()
       : product.nombre;
 
-  // Usar primera imagen del array de fotos si existe
   const primeraFoto =
     Array.isArray(product.fotos) && product.fotos.length > 0
       ? product.fotos[0]
-      : "/images/no-image.jpg"; // Imagen por defecto si no hay
+      : "/images/no-image.jpg"; 
 
   return (
     <Link to={`/productos/${product.id}`}>
@@ -30,17 +29,29 @@ const ProductCard = ({ product }: any) => {
           src={primeraFoto}
           alt={nombre}
           width="100%"
-          height="200px"
+          height="220px"
           objectFit="cover"
         />
-        <Stack p={4}>
-          <Text fontSize="xl" fontWeight="bold" noOfLines={2} isTruncated>
-            {nombre}
-          </Text>
-          <Text fontSize="lg" color="green.500" fontWeight="semibold">
-            ${product.minorista}
-          </Text>
-        </Stack>
+       <Stack p={2} minH={"99px"}>
+  <Text fontSize="16px" fontWeight="semibold" noOfLines={2}>
+    {nombre}{" "}
+    {product.categoria === 1 && (
+      <Text as="span" fontSize="sm" color="gray.500">
+        - SELLADO NUEVO
+      </Text>
+    )}
+    {product.categoria === 2 && (
+      <Text as="span" fontSize="sm" color="gray.500">
+        - USADO PREMIUM
+      </Text>
+    )}
+  </Text>
+
+  <Text fontSize="lg" color="green.500" fontWeight="semibold">
+    ${product.minorista}
+  </Text>
+</Stack>
+
       </Box>
     </Link>
   );

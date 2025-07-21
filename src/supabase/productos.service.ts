@@ -1,7 +1,6 @@
 import supabase from "./supabase.service";
 
 async function getProductos() {
-  console.log("entre en get productos")
   const { data, error } = await supabase
     .from("productos")
     .select();
@@ -32,4 +31,20 @@ async function getProductoPorId(id) {
   return data;
 }
 
-export { getProductos , getProductosDestacados , getProductoPorId};
+async function getDetallesProducto(productoId: number) {
+  console.log("ID", productoId)
+  const { data, error } = await supabase
+    .from("productos_detalles")
+    .select('*')
+    .eq('producto_id', productoId);
+    console.log("DATAAAA", data)
+
+  if (error) {
+    console.error('Error al obtener los detalles:', error);
+    throw error;
+  }
+
+  return data;
+}
+
+export { getProductos , getProductosDestacados , getProductoPorId , getDetallesProducto};

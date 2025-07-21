@@ -4,7 +4,6 @@ import { FaMoneyBillWave, FaShieldAlt, FaStore, FaTruck, FaWhatsapp } from "reac
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
-import { productsDestacados } from "../data";
 import supabase from "../supabase/supabase.service";
 import { getProductos, getProductosDestacados } from "../supabase/productos.service";
 
@@ -38,10 +37,7 @@ useEffect(() => {
     setProductosDestacados(destacados);
   };
 
-  // Llamada inicial
   fetchProductos();
-
-  // Escuchar cambios en la tabla
   const productosChannel = supabase
     .channel('productos')
     .on(
@@ -58,9 +54,6 @@ useEffect(() => {
     productosChannel.unsubscribe();
   };
 }, []);
-
-
-
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -84,11 +77,9 @@ useEffect(() => {
     };
   }, []);
 
-
-
   return (
     <Box w="100%" position="relative">
-    
+  
    <Box bg="rgb(248, 248, 248)" minHeight="100vh" >
         <Image 
           src="/images/portada2.png" 
@@ -169,71 +160,6 @@ useEffect(() => {
     transition="all 0.3s ease"
   />
 </Link>
-     
-
-       {/* <Stack direction="column" spacing={4} p={4}>
-           <Text mt={2} fontSize={"18px"} fontWeight={700}> Productos</Text>
-          <Flex direction="row" justify="space-between" align="center" wrap="wrap">
-            <Button 
-              fontWeight={300}
-              fontSize={"15px"}
-            //  variant={filtro === 'todos' ? 'solid' : 'outline'} // Cambia el fondo si está seleccionado
-              color={'gray.600'}
-              //bg={filtro === 'todos' ? '#ccc' : 'transparent'}
-              //borderColor={filtro === 'todos' ? 'gray.100' : '#ccc'}
-              //onClick={() => setFiltro('todos')} 
-              flex="1" 
-              _hover={{ borderColor: 'white' }}
-              _active={{ borderColor: 'white' }}
-            >
-              Todos
-            </Button>
-            <Button 
-              fontWeight={300}
-              fontSize={"15px"}
-             // variant={filtro === 'nuevos' ? 'solid' : 'outline'}
-              color={'gray.600'}
-              //bg={filtro === 'nuevos' ? '#ccc' : 'transparent'}
-              //borderColor={filtro === 'nuevos' ? 'gray.100' : '#ccc'}
-              //onClick={() => setFiltro('nuevos')} 
-              flex="1" 
-              m={1}
-              _hover={{ borderColor: 'white' }}
-              _active={{ borderColor: 'white' }}
-            >
-              Sellados
-            </Button>
-            <Button 
-              fontWeight={300}
-              fontSize={"15px"}
-              //variant={filtro === 'usados' ? 'solid' : 'outline'}
-             color={'gray.600'}
-              //bg={filtro === 'usados' ? '#ccc' : 'transparent'}
-              //borderColor={filtro === 'usados' ? 'gray.100' : '#ccc'}
-              //onClick={() => setFiltro('usados')} 
-              flex="1" 
-              m={1}
-              _hover={{ borderColor: 'white' }}
-              _active={{ borderColor: 'white' }}
-            >
-              Usados
-            </Button>
-            <Button 
-              fontWeight={300}
-              fontSize={"15px"}
-             // variant={filtro === 'accesorios' ? 'solid' : 'outline'}
-             color={'gray.600'}
-              //bg={filtro === 'accesorios' ? '#ccc' : 'transparent'}
-              //borderColor={filtro === 'accesorios' ? 'gray.100' : '#ccc'}
-              //onClick={() => setFiltro('accesorios')} 
-              flex="1" 
-              _hover={{ borderColor: 'white' }}
-              _active={{ borderColor: 'white' }}
-            >
-              Accesorios
-            </Button>
-          </Flex>
-        </Stack> */}
 
         <Box p={8}>
   <Text mb={4} fontSize={"18px"} fontWeight={700}> Productos destacados</Text>
@@ -260,70 +186,9 @@ useEffect(() => {
         >
         VER MÁS EQUIPOS
         </Button>
-   
   </Box>
-   
-
-        {/* Grid de productos */}
-        {/* <SimpleGrid 
-          columns={{ base: 2, md: 4 }}  
-          spacing={4} 
-          p={4}
-        >
-          {productosFiltrados.length === 0 ? (
-            <Box textAlign="center" color="gray.500" fontSize="lg">
-              Producto no encontrado
-            </Box>
-          ) : (
-            productosFiltrados.map((producto) => (
-              <CardProduct key={producto.id} producto={producto} modelos={modelos} />
-            ))
-          )}
-        </SimpleGrid> */}
       </Box>
 
-
-
-
-
-      {/* DISEÑO ANTERIOR */}
-
-
-     
-
-{/* SECCION DE INFORMACION  */}
-{/* <Box
-  mt={6}
-  px={{ base: 4, md: 16 }}
-  py={10}
-
->
-  <Box
-    display="flex"
-    flexDirection={{ base: "column", md: "row" }}
-    justifyContent="space-between"
-    alignItems="center"
-    gap={8}
-  >
-    {[1, 2, 3].map((_, index) => (
-      <Box
-        key={index}
-        textAlign="center"
-        maxW="300px"
-        mx="auto"
-      >
-        <Icon as={FaTruck} boxSize={12} color="black" mb={4} />
-
-        <Box fontWeight="bold" fontSize="xl" mb={2}>
-          Envíos a todo el país
-        </Box>
-        <Box color="gray.600" fontSize="sm">
-          Coordinado con el vendedor luego de aprobar el pedido.
-        </Box>
-      </Box>
-    ))}
-  </Box>
-</Box> */}
 <VStack mt={10} mb={10} spacing={8} align="center">
       {/* Envíos */}
       <Box textAlign="center" maxW="300px">

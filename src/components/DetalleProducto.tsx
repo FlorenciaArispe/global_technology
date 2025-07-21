@@ -30,34 +30,43 @@ import { FaStore, FaTruck, FaWhatsapp } from 'react-icons/fa';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import Slider from 'react-slick';
 import { useEffect, useState } from 'react';
-import { getProductoPorId } from '../supabase/productos.service';
+import { getDetallesProducto, getProductoPorId } from '../supabase/productos.service';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 const DetalleProducto = () => {
   const { id } = useParams();
   const [producto, setProducto] = useState<any>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [modalIndex, setModalIndex] = useState(0);
+  const [detallesProducto, setDetalleProducto] = useState<any[]>([]);
+
 
   useEffect(() => {
     const fetchProducto = async () => {
       try {
         const data = await getProductoPorId(id);
         setProducto(data);
+
+        const detalles = await getDetallesProducto(id);
+        setDetalleProducto(detalles);
       } catch (error) {
-        console.error("Error al obtener producto", error);
+        console.error("Error al obtener los detalles", error);
       }
     };
+
     fetchProducto();
   }, [id]);
+
 
   if (!producto) return <Text>Cargando producto...</Text>;
 
   const nombreFinal =
     producto.categoria === 1 || producto.categoria === 2
-      ? `iPhone ${producto.modelo} - ${producto.capacidad || ''}`.trim()
+      ? `${producto.modelo} - ${producto.capacidad || ''}`.trim()
       : producto.nombre;
 
- const imagenes: string[] = producto.fotos?.length > 0 ? producto.fotos : ['/images/default.png'];
+  const imagenes: string[] = producto.fotos?.length > 0 ? producto.fotos : ['/images/default.png'];
 
 
   const sliderSettings = {
@@ -101,18 +110,18 @@ const DetalleProducto = () => {
         />
       </Link>
 
-      {/* Breadcrumb */}
-      <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/productos">Productos</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">{nombreFinal}</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+<Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
+  <BreadcrumbItem>
+    <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem>
+    <BreadcrumbLink as={RouterLink} to="/productos">Productos</BreadcrumbLink>
+  </BreadcrumbItem>
+  <BreadcrumbItem isCurrentPage>
+    <BreadcrumbLink>{nombreFinal}</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
+
 
       {/* Galería de imágenes */}
       <Box maxW="400px" mb={6}>
@@ -172,7 +181,8 @@ const DetalleProducto = () => {
 
       {/* Info */}
       <Text fontSize="2xl" fontWeight="bold" mb={2}>{nombreFinal}</Text>
-      <Text fontSize="2xl" color="green.500" fontWeight="bold" mb={2}>${producto.minorista}</Text>
+      <Flex direction={"row"} justify={"space-between"} >
+  <Text fontSize="2xl" color="green.500" fontWeight="bold" mb={2}>${producto.minorista}</Text>
 
       <Button
         as="a"
@@ -188,32 +198,45 @@ const DetalleProducto = () => {
         Consultas
       </Button>
 
-      {/* Detalles */}
+      </Flex>
+    
+
       {producto.categoria !== 3 && (
-              <Box mb={4}>
-        <Heading size="md" mb={3}>Detalles del equipo</Heading>
-        <Table variant="simple">
-          <Tbody>
-            {producto.modelo && (
-              <Tr>
-                <Td fontWeight="bold">Modelo</Td>
-                <Td>{producto.modelo}</Td>
-              </Tr>
-            )}
-            <Tr>
-              <Td fontWeight="bold">Colores</Td>
-              <Td>{producto.color || 'No especificado'}</Td>
-            </Tr>
-            {producto.capacidad && (
-              <Tr>
-                <Td fontWeight="bold">Capacidad</Td>
-                <Td>{producto.capacidad}</Td>
-              </Tr>
-            )}
-          </Tbody>
-        </Table>
-      </Box>
+        <Box mb={4}>
+          <Heading size="md" mb={3}>Detalles del equipo</Heading>
+          <Table variant="simple">
+            <Tbody>
+              {producto.modelo && (
+                <Tr>
+                  <Td fontWeight="bold">Modelo</Td>
+                  <Td>{producto.modelo}</Td>
+                </Tr>
+              )}
+              {detallesProducto.length > 0 && (
+                <Tr>
+                  <Td fontWeight="bold">Colores</Td>
+                  <Td>
+                    {detallesProducto.map((v, i) => (
+                      <Text as="span" key={i}>
+                        {v.color}{i < detallesProducto.length - 1 ? ', ' : ''}
+                      </Text>
+                    ))}
+                  </Td>
+                </Tr>
+              )}
+
+              {producto.capacidad && (
+                <Tr>
+                  <Td fontWeight="bold">Capacidad</Td>
+                  <Td>{producto.capacidad}</Td>
+                </Tr>
+              )}
+            </Tbody>
+          </Table>
+        </Box>
       )}
+
+
 
 
       {producto.categoria === 2 && (

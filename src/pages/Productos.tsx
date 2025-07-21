@@ -17,57 +17,56 @@ import {
 import { ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { IoFilter } from 'react-icons/io5';
 import ProductCard from '../components/ProductCard';
-import { useLocation } from 'react-router-dom';
+
 import { FaWhatsapp } from 'react-icons/fa';
 import { getProductos } from '../supabase/productos.service';
 import { getCategorias } from '../supabase/categorias.service';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Productos = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-const [productos, setProductos] = useState<any[]>([]);
-const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [productos, setProductos] = useState<any[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
 
-useEffect(() => {
-  (async () => {
-    try {
-      const data = await getCategorias();
-      setCategorias(data);
-      console.log(data)
-    } catch (error) {
-      console.error("Error al obtener categorías:", error);
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getCategorias();
+        setCategorias(data);
+        console.log(data)
+      } catch (error) {
+        console.error("Error al obtener categorías:", error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getProductos();
+        setProductos(data);
+        setFilteredProducts(data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const categoriaId = params.get('categoria');
+
+  if (categoriaId && categorias.length > 0 && productos.length > 0) {
+    const categoria = categorias.find(cat => cat.id == categoriaId);
+    if (categoria) {
+      const filtered = productos.filter(product => product.categoria === categoria.id);
+      setFilteredProducts(filtered);
+      setSelectedCategories([categoria.id]);
     }
-  })();
-}, []);
-
-useEffect(() => {
-  (async () => {
-    try {
-      const data = await getProductos();
-      setProductos(data);
-      setFilteredProducts(data);
-    } catch (error) {
-      console.error("Error al obtener productos:", error);
-    }
-  })();
-}, []);
-
-  const location = useLocation();
-
-  // useEffect(() => {
-  //   const params = new URLSearchParams(location.search);
-  //   const categoriaNombre = params.get('categoria');
-  
-  //   if (categoriaNombre) {
-  //     const categoria = categories.find(cat => cat.name.toLowerCase() === categoriaNombre.toLowerCase());
-  //     if (categoria) {
-  //       const filtered = productsAll.filter(product => product.category === categoria.id);
-  //       setFilteredProducts(filtered);
-  //       setSelectedCategories([categoria.id]);
-  //     }
-  //   }
-  // }, [location.search]);
+  }
+}, [location.search, categorias, productos]); 
 
 
   const handleToggleCategory = (categoryId: number) => {
@@ -77,76 +76,69 @@ useEffect(() => {
 
     setSelectedCategories(updatedCategories);
 
-  const filtered = productos.filter((product) =>
-  updatedCategories.length === 0 ? true : updatedCategories.includes(product.categoria)
-);
+    const filtered = productos.filter((product) =>
+      updatedCategories.length === 0 ? true : updatedCategories.includes(product.categoria)
+    );
 
     setFilteredProducts(filtered);
   };
 
-
-
-
-
-
-
   return (
     <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
       <Link
-              href="https://wa.me/message/5RCBRGOHGKPVL1"
-              isExternal
-              position="fixed"
-              bottom="20px"
-              right="20px"
-              zIndex="1000"
-            >
-              <Box
-                as={FaWhatsapp}
-                boxSize="60px"
-                color="#25D366" // verde oficial WhatsApp
-                _hover={{ transform: "scale(1.1)" }}
-                transition="all 0.3s ease"
-              />
-            </Link>
+        href="https://wa.me/message/5RCBRGOHGKPVL1"
+        isExternal
+        position="fixed"
+        bottom="20px"
+        right="20px"
+        zIndex="1000"
+      >
+        <Box
+          as={FaWhatsapp}
+          boxSize="60px"
+          color="#25D366" // verde oficial WhatsApp
+          _hover={{ transform: "scale(1.1)" }}
+          transition="all 0.3s ease"
+        />
+      </Link>
 
-
-      {/* Breadcrumb */}
       <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
+          <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="/productos">Productos</BreadcrumbLink>
+          <BreadcrumbLink as={RouterLink} to="/productos">Productos</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
 
-      <Flex mt={2} wrap="wrap" gap={2}>
-  {selectedCategories.map((id) => {
-    const cat = categorias.find((c) => c.id === id);
-    return (
-      <Box
-        key={id}
-        px={3}
-        py={1}
-        bg="gray.100"
-        borderRadius="md"
-        display="flex"
-        alignItems="center"
-        fontSize="sm"
-      >
-        {cat?.nombre}
-        <IconButton
-          icon={<CloseIcon boxSize={2.5} />}
-          size="xs"
-          ml={2}
-          aria-label="Quitar filtro"
-          onClick={() => handleToggleCategory(id)}
-        />
-      </Box>
-    );
-  })}
 
-</Flex>
+      <Flex mt={2} wrap="wrap" gap={2}>
+        {selectedCategories.map((id) => {
+          const cat = categorias.find((c) => c.id === id);
+          return (
+            <Box
+              key={id}
+              px={3}
+              py={1}
+              bg="gray.100"
+              borderRadius="md"
+              display="flex"
+              alignItems="center"
+              fontSize="sm"
+            >
+              {cat?.nombre}
+              <IconButton
+                icon={<CloseIcon boxSize={2.5} />}
+                size="xs"
+                ml={2}
+                aria-label="Quitar filtro"
+                onClick={() => handleToggleCategory(id)}
+              />
+            </Box>
+          );
+        })}
+
+      </Flex>
       <Flex justify="space-between" align="center" mb={5} >
         <Heading size="md">Productos</Heading>
         <Button
@@ -168,7 +160,9 @@ useEffect(() => {
           Filtrar
         </Button>
       </Flex>
-      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={4} mb={5}>
+   <SimpleGrid columns={2} spacing={3} mb={5}>
+
+
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -200,48 +194,48 @@ useEffect(() => {
           </Flex>
 
           <Box mb={6}>
-  <Text fontWeight="bold" mb={2}>Ordenar</Text>
-  <Select placeholder="Seleccionar orden">
-    <option value="precioMayor">Precio: mayor a menor</option>
-    <option value="precioMenor">Precio: menor a mayor</option>
-    <option value="az">A - Z</option>
-    <option value="za">Z - A</option>
-  </Select>
-</Box>
+            <Text fontWeight="bold" mb={2}>Ordenar</Text>
+            <Select placeholder="Seleccionar orden">
+              <option value="precioMayor">Precio: mayor a menor</option>
+              <option value="precioMenor">Precio: menor a mayor</option>
+              <option value="az">A - Z</option>
+              <option value="za">Z - A</option>
+            </Select>
+          </Box>
 
-<Box mb={6}>
-  <Text fontWeight="bold" mb={4}>Categorías</Text>
-  <Flex gap={2} wrap="wrap">
-    {categorias.map((cat) => 
-     <Button
-    key={cat.id}
-    size="sm"
-    variant="outline"
-    colorScheme="blackAlpha"
-    onClick={() => {
-      const filtered = productos.filter(product => product.categoria === cat.id);
-      setFilteredProducts(filtered);
-      setSelectedCategories([cat.id]);
-      setIsFilterOpen(false);
-    }}
-  >
-    {cat.nombre}
-  </Button>
-    )}
-  </Flex>
-</Box>
+          <Box mb={6}>
+            <Text fontWeight="bold" mb={4}>Categorías</Text>
+            <Flex gap={2} wrap="wrap">
+              {categorias.map((cat) =>
+                <Button
+                  key={cat.id}
+                  size="sm"
+                  variant="outline"
+                  colorScheme="blackAlpha"
+                  onClick={() => {
+                    const filtered = productos.filter(product => product.categoria === cat.id);
+                    setFilteredProducts(filtered);
+                    setSelectedCategories([cat.id]);
+                    setIsFilterOpen(false);
+                  }}
+                >
+                  {cat.nombre}
+                </Button>
+              )}
+            </Flex>
+          </Box>
 
-<Box>
-  <Text fontWeight="bold" mb={2}>Precio</Text>
-  <Flex  gap={2} mb={3}>
-    <Input w={"140px"} placeholder="Desde" type="number" />
-    <Input w={"140px"} placeholder="Hasta" type="number" />
- 
-  <Button size="sm" colorScheme="blackAlpha">
-    Aplicar
-  </Button>
-  </Flex>
-</Box>
+          <Box>
+            <Text fontWeight="bold" mb={2}>Precio</Text>
+            <Flex gap={2} mb={3}>
+              <Input w={"140px"} placeholder="Desde" type="number" />
+              <Input w={"140px"} placeholder="Hasta" type="number" />
+
+              <Button size="sm" colorScheme="blackAlpha">
+                Aplicar
+              </Button>
+            </Flex>
+          </Box>
         </Box>
       )}
     </Box>

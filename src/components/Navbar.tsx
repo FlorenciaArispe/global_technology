@@ -1,63 +1,68 @@
 import {
   Box,
   Flex,
-  Icon,
   Image,
-  Text,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerCloseButton,
-  Divider,
   Button,
-  Collapse,
-  useDisclosure,
   IconButton,
   Input,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { FiShoppingCart, FiTrash2, FiMinus, FiPlus, FiChevronDown, FiTruck, FiMapPin, FiPackage } from "react-icons/fi";
 import { MenuMobile } from "./MenuMobile";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SearchIcon } from "@chakra-ui/icons";
-
-// const mockCart = [];
-const mockCart = [
-  {
-    id: 1,
-    name: "iPhone 16",
-    capacity: "128GB",
-    description: "Negro espacial",
-    quantity: 1,
-    price: 1200,
-    image: "/images/iphone_mock.png",
-  },
-  {
-    id: 2,
-    name: "iPhone 16",
-    capacity: "128GB",
-    description: "Negro espacial",
-    quantity: 1,
-    price: 1200,
-    image: "/images/iphone_mock.png",
-  },
-];
+import { getProductos } from "../supabase/productos.service";
 
 const Navbar = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [searchVisible, setSearchVisible] = useState(false); 
+  const [searchVisible, setSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [resultados, setResultados] = useState<any[]>([]);
+
 
   const toggleSearch = () => {
     setSearchVisible((prev) => !prev);
   };
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const valor = e.target.value;
 
+    // Permitir letras, números, tildes, ñ y espacios
+    const regex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]*$/;
+
+    if (regex.test(valor)) {
+      setSearchText(valor);
+
+      if (valor.trim().length >= 2) {
+        buscarCoincidencias(valor.trim());
+      } else {
+        setResultados([]);
+      }
+    }
+  };
+
+
+  const buscarCoincidencias = async (texto: string) => {
+    const productos = await getProductos();
+    const textoMin = texto.toLowerCase();
+
+    const coincidencias = productos.filter(p =>
+      p.nombre?.toLowerCase().includes(textoMin) ||
+      p.modelo?.toLowerCase().includes(textoMin)
+    );
+
+    setResultados(coincidencias);
+  };
+
+  const handleSeleccionProducto = (id: number) => {
+    navigate(`/productos/${id}`);
+    setSearchText('');
+    setResultados([]);
+    setSearchVisible(false);
+  };
 
   return (
-  <Box
+    <Box
       as="nav"
       boxShadow="0px 4px 6px rgba(0, 0, 0, 0.1)"
       position="sticky"
@@ -66,38 +71,30 @@ const Navbar = () => {
       bg="white"
       p={2}
     >
-        <Flex justify="space-between" align="center">
-{isMobile && (
-    <MenuMobile />
-          // <IconButton
-          //   aria-label="Abrir menú"
-          //   icon={<HamburgerIcon />}
-          //   variant="ghost"
-          //   color="black"
-          //   fontSize="24px"
-          //   _hover={{
-          //     backgroundColor: "transparent",
-          //     border: "1px solid white",
-          //   }}
-          // />
+      <Flex justify="space-between" align="center">
+        {isMobile && (
+          <MenuMobile />
         )}
 
-        <Image
-          ml={isMobile ? 0 : 10}
-          w={isMobile ? "50px" : "100px"}
-          src="/images/solo-logo.png"
-          alt="Global Technology"
-          mx={isMobile ? "auto" : "unset"}
-        />
+        <Link to="/">
+          <Image
+            ml={isMobile ? 0 : 10}
+            w={isMobile ? "50px" : "100px"}
+            src="/images/solo-logo.png"
+            alt="Global Technology"
+            mx={isMobile ? "auto" : "unset"}
+            cursor="pointer"
+          />
+        </Link>
 
-         {!isMobile && (
+        {!isMobile && (
           <Flex>
             <Button
               variant="ghost"
               color="black"
               mr={4}
               _hover={{
-                outline: "1px solid black", 
+                outline: "1px solid black",
                 backgroundColor: "transparent",
               }}
             >
@@ -127,8 +124,6 @@ const Navbar = () => {
             </Button>
           </Flex>
         )}
-
-        {/* Lupa para abrir el campo de búsqueda */}
         <IconButton
           aria-label="Buscar"
           icon={<SearchIcon />}
@@ -141,44 +136,52 @@ const Navbar = () => {
             border: "1px solid white",
           }}
         />
-
-        {/* Campo de búsqueda, solo visible cuando searchVisible es true */}
         {searchVisible && (
-          <Input
-            placeholder="Buscar productos..."
-            size="sm"
-            variant="flushed"
-            focusBorderColor="blue.400"
-            w="full" // Hace que ocupe todo el ancho
-            ml={4} // Espacio a la izquierda
-          />
+          <Box position="relative" w="full" ml={4}>
+            <Input
+              placeholder="Buscar productos..."
+              size="sm"
+              variant="flushed"
+              focusBorderColor="blue.400"
+              value={searchText}
+              onChange={handleSearchChange}
+            />
+            {resultados.length > 0 && (
+              <Box
+                position="absolute"
+                top="100%"
+                left={0}
+                w="full"
+                bg="white"
+                border="1px solid #ccc"
+                borderRadius="md"
+                mt={1}
+                zIndex={20}
+                maxH="200px"
+                overflowY="auto"
+              >
+                {resultados.map((r) => (
+                  <Button
+                    key={r.id}
+                    variant="ghost"
+                    justifyContent="flex-start"
+                    w="100%"
+                    onClick={() => handleSeleccionProducto(r.id)}
+                    _hover={{ bg: "gray.100" }}
+                    fontSize="sm"
+                  >
+                    {r.nombre || r.modelo}
+                  </Button>
+                ))}
+              </Box>
+            )}
+          </Box>
         )}
+      </Flex>
 
-        </Flex>
 
-
-      {/* <Image
-        src="/images/COMPLETO-Negro.svg"
-        alt="Logo completo"
-        height="35px"
-        ml={1}
-        display={{ base: "none", md: "block" }}
-      /> */}
-
-      {/* <Flex
-        gap={6}
-        align="center"
-        display={{ base: "none", md: "flex" }}
-        ml="auto"
-        mr={4}
-      >
-        <Text cursor="pointer">Productos</Text>
-        <Text cursor="pointer">iPhone 16</Text>
-        <Icon as={FiShoppingCart} boxSize={5} cursor="pointer" onClick={openCart} />
-      </Flex> */}
 
     </Box>
-
 
   );
 };

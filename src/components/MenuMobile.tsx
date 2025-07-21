@@ -8,8 +8,6 @@ import {
   useDisclosure,
   VStack,
   Button,
-  Box,
-  Divider,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -66,7 +64,7 @@ export const MenuMobile = () => {
                 color="black"
                 fontWeight="normal"
                 onClick={() => {
-                  navigate('/productos?categoria=Sellados');
+                  navigate('/productos?categoria=1');
                   onClose();
                 }}
               >
@@ -77,7 +75,7 @@ export const MenuMobile = () => {
                 color="black"
                 fontWeight="normal"
                 onClick={() => {
-                  navigate('/productos?categoria=Usados');
+                  navigate('/productos?categoria=2');
                   onClose();
                 }}
               >
@@ -89,7 +87,7 @@ export const MenuMobile = () => {
                 color="black"
                 fontWeight="normal"
                 onClick={() => {
-                  navigate('/productos?categoria=Accesorios');
+                  navigate('/productos?categoria=3');
                   onClose();
                 }}
               >
@@ -118,21 +116,6 @@ export const MenuMobile = () => {
               >
                 Contacto
               </Button>
-
-              {/* <Box w="100%" pt={5}>
-                <Divider />
-                <Button
-                  variant="ghost"
-                  color="black"
-                  mt={4}
-                  onClick={() => {
-                    navigate('/login');
-                    onClose();
-                  }}
-                >
-                  Iniciar sesión
-                </Button>
-              </Box> */}
 
             </VStack>
           </DrawerBody>
