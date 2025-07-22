@@ -29,7 +29,7 @@ const Footer = () => {
   <Stack direction="row" spacing={4}>
     <IconButton
       as="a"
-      href="https://www.facebook.com"
+      href="https://www.facebook.com/share/1B3cVRd5DX/?mibextid=wwXIfr"
       target="_blank"
       icon={<FaFacebook size="28px" />} // tamaño del ícono
       variant="ghost"
@@ -41,7 +41,7 @@ const Footer = () => {
     />
     <IconButton
       as="a"
-      href="https://www.instagram.com"
+      href="https://www.instagram.com/globaltechnology.bahia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
       target="_blank"
       icon={<FaInstagram size="28px" />}
       variant="ghost"

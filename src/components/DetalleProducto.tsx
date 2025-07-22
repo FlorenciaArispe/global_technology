@@ -23,7 +23,8 @@ import {
   ModalBody,
   useDisclosure,
   IconButton,
-  Link
+  Link,
+  Badge
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { FaStore, FaTruck, FaWhatsapp } from 'react-icons/fa';
@@ -32,9 +33,11 @@ import Slider from 'react-slick';
 import { useEffect, useState } from 'react';
 import { getDetallesProducto, getProductoPorId } from '../supabase/productos.service';
 import { Link as RouterLink } from 'react-router-dom';
+import { useCotizacionContext } from '../context/CotizacionContext';
 
 
 const DetalleProducto = () => {
+  const { cotizacion, loading } = useCotizacionContext();
   const { id } = useParams();
   const [producto, setProducto] = useState<any>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -60,6 +63,15 @@ const DetalleProducto = () => {
 
 
   if (!producto) return <Text>Cargando producto...</Text>;
+
+  const precioPesos =
+    !loading && cotizacion
+      ? (producto.minorista * cotizacion).toLocaleString('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+      })
+      : null;
+
 
   const nombreFinal =
     producto.categoria === 1 || producto.categoria === 2
@@ -92,7 +104,12 @@ const DetalleProducto = () => {
   };
 
   return (
-    <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }}>
+    <Box
+      w="100%"
+      px={4}
+      mt={{ base: "15px", md: "80px" }}
+      overflowX="hidden" // ⬅️ esto evita el desbordamiento lateral
+    >
       <Link
         href="https://wa.me/message/5RCBRGOHGKPVL1"
         isExternal
@@ -110,23 +127,26 @@ const DetalleProducto = () => {
         />
       </Link>
 
-<Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
-  <BreadcrumbItem>
-    <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem>
-    <BreadcrumbLink as={RouterLink} to="/productos">Productos</BreadcrumbLink>
-  </BreadcrumbItem>
-  <BreadcrumbItem isCurrentPage>
-    <BreadcrumbLink>{nombreFinal}</BreadcrumbLink>
-  </BreadcrumbItem>
-</Breadcrumb>
+      <Breadcrumb spacing="8px" separator={<ChevronRightIcon color="gray.500" />} mb={4}>
+        <BreadcrumbItem>
+          <BreadcrumbLink as={RouterLink} to="/">Inicio</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink as={RouterLink} to="/productos">Productos</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink>{nombreFinal}</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
 
 
       {/* Galería de imágenes */}
       <Box maxW="400px" mb={6}>
         {imagenes.length > 1 ? (
-          <Slider {...sliderSettings}>
+          <Slider
+            {...sliderSettings}
+            style={{ maxWidth: "100%", overflow: "hidden" }}
+          >
             {imagenes.map((img, i) => (
               <Image
                 key={i}
@@ -180,29 +200,46 @@ const DetalleProducto = () => {
       </Modal>
 
       {/* Info */}
+
+
       <Text fontSize="2xl" fontWeight="bold" mb={2}>{nombreFinal}</Text>
-      <Flex direction={"row"} justify={"space-between"} >
-  <Text fontSize="2xl" color="green.500" fontWeight="bold" mb={2}>${producto.minorista}</Text>
 
-      <Button
-        as="a"
-        href={`https://wa.me/5492914197099?text=${encodeURIComponent(`*¡Hola Global Technology!*\nQuiero consultar sobre *${nombreFinal}*`)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        leftIcon={<FaWhatsapp />}
-        bg="#25D366"
-        color="white"
-        _hover={{ bg: "#1EBE5D" }}
-        mb={6}
-      >
-        Consultas
-      </Button>
+      <Flex direction="row" justify="space-between" align="center" mb={4} flexWrap="wrap">
+        <Box>
+          <Text fontSize="2xl" fontWeight="bold" color="green.600">
+            USD ${producto.minorista}
+            {/* <Badge ml={2} h="20px" colorScheme="green" variant="subtle">
+        USD
+      </Badge> */}
+          </Text>
 
+          {!loading && precioPesos && (
+            <Text fontSize="md" color="gray.600" mt={1}>
+              {precioPesos}
+              <Badge ml={2} h="20px" colorScheme="blue" variant="subtle">
+                ARG
+              </Badge>
+            </Text>
+          )}
+        </Box>
+
+        <Button
+          as="a"
+          href={`https://wa.me/5492914197099?text=${encodeURIComponent(`*¡Hola Global Technology!*\nQuiero consultar sobre *${nombreFinal}*`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          leftIcon={<FaWhatsapp />}
+          bg="#25D366"
+          color="white"
+          _hover={{ bg: "#1EBE5D" }}
+        >
+          Consultas
+        </Button>
       </Flex>
-    
+
 
       {producto.categoria !== 3 && (
-        <Box mb={4}>
+        <Box mt={12} mb={6}>
           <Heading size="md" mb={3}>Detalles del equipo</Heading>
           <Table variant="simple">
             <Tbody>
@@ -231,6 +268,7 @@ const DetalleProducto = () => {
                   <Td>{producto.capacidad}</Td>
                 </Tr>
               )}
+
             </Tbody>
           </Table>
         </Box>

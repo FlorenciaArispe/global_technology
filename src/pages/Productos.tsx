@@ -21,9 +21,10 @@ import ProductCard from '../components/ProductCard';
 import { FaWhatsapp } from 'react-icons/fa';
 import { getProductos } from '../supabase/productos.service';
 import { getCategorias } from '../supabase/categorias.service';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 const Productos = () => {
+   const location = useLocation(); 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
@@ -96,7 +97,7 @@ const Productos = () => {
         <Box
           as={FaWhatsapp}
           boxSize="60px"
-          color="#25D366" // verde oficial WhatsApp
+          color="#25D366" 
           _hover={{ transform: "scale(1.1)" }}
           transition="all 0.3s ease"
         />

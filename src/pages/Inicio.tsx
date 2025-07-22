@@ -4,27 +4,27 @@ import { FaMoneyBillWave, FaShieldAlt, FaStore, FaTruck, FaWhatsapp } from "reac
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
-import supabase from "../supabase/supabase.service";
+import supabase from "../supabase/supabase";
 import { getProductos, getProductosDestacados } from "../supabase/productos.service";
+import { getImagenesInicio } from "../supabase/imagenes.service";
 
 const MotionBox = motion(Box);
 
 
-const images = [
-  "/products/16-promax.jpeg",
-  "/products/16.jpeg",
-  "/products/cajas-16promax.jpeg",
-  "/products/fundas-14.jpeg",
-  "/products/fundas-16promax.jpeg",
-  "/products/fundas-16pro.jpeg",
-  "/products/13.jpeg",
-];
 
 function Inicio() {
   const navigate = useNavigate();
 
   const [productos, setProductos] =useState([])
   const [productosDestacados, setProductosDestacados] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
+
+useEffect(() => {
+  getImagenesInicio().then(data => {
+    setImages(data.map(img => img.url));
+    console.log("data imagenes", data)
+  });
+}, []);
 
 useEffect(() => {
   // Trae productos y destacados al inicio y ante cambios

@@ -1,5 +1,5 @@
 // supabase/categorias.service.ts
-import supabase from './supabase.service';
+import supabase from './supabase';
 
 async function getCategorias() {
   const { data, error } = await supabase

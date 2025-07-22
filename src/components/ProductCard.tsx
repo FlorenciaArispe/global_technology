@@ -1,7 +1,9 @@
-import { Box, Image, Text, Stack } from '@chakra-ui/react';
+import { Box, Image, Text, Stack, Badge } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useCotizacionContext } from '../context/CotizacionContext';
 
 const ProductCard = ({ product }: any) => {
+  const { cotizacion, loading } = useCotizacionContext();
 
   const nombre =
     product.categoria === 1 || product.categoria === 2
@@ -11,7 +13,16 @@ const ProductCard = ({ product }: any) => {
   const primeraFoto =
     Array.isArray(product.fotos) && product.fotos.length > 0
       ? product.fotos[0]
-      : "/images/no-image.jpg"; 
+      : "/images/no-image.jpg";
+
+  // Precio en pesos (solo si no es categoría 3)
+  const precioPesos =
+    product.categoria !== 3 && !loading && cotizacion
+      ? (product.minorista * cotizacion).toLocaleString('es-AR', {
+          style: 'currency',
+          currency: 'ARS',
+        })
+      : null;
 
   return (
     <Link to={`/productos/${product.id}`}>
@@ -32,26 +43,51 @@ const ProductCard = ({ product }: any) => {
           height="220px"
           objectFit="cover"
         />
-       <Stack p={2} minH={"99px"}>
-  <Text fontSize="16px" fontWeight="semibold" noOfLines={2}>
-    {nombre}{" "}
-    {product.categoria === 1 && (
-      <Text as="span" fontSize="sm" color="gray.500">
-        - SELLADO NUEVO
-      </Text>
-    )}
-    {product.categoria === 2 && (
-      <Text as="span" fontSize="sm" color="gray.500">
-        - USADO PREMIUM
-      </Text>
-    )}
-  </Text>
+        <Stack p={2} minH="125px" justify="space-between">
+          <Text fontSize="15px" fontWeight="semibold" noOfLines={2}>
+            {nombre}{" "}
+            {product.categoria === 1 && (
+              <Text  fontSize="15px" as="span"  color="gray.500">
+                - SELLADO NUEVO
+              </Text>
+            )}
+            {product.categoria === 2 && (
+              <Text as="span"  fontSize="15px" color="gray.500">
+                - USADO PREMIUM
+              </Text>
+            )}
+          </Text>
 
-  <Text fontSize="lg" color="green.500" fontWeight="semibold">
-    ${product.minorista}
-  </Text>
-</Stack>
-
+          <Box>
+            {product.categoria === 3 ? (
+              <Text fontSize="20px" fontWeight="bold" color="green.600">
+                
+               
+                {product.minorista.toLocaleString('es-AR', {
+                  style: 'currency',
+                  currency: 'ARS',
+                })}{" "}
+              
+                 
+               
+              </Text>
+            ) : (
+              <>
+                <Text fontSize="19px" fontWeight="bold" color="green.600">
+                  USD ${product.minorista}
+                </Text>
+                {!loading && precioPesos && (
+                  <Text fontSize="14px"color="gray.600">
+                    {precioPesos}
+                    <Badge ml={2} h="20px" colorScheme="blue" variant="subtle">
+                      ARG
+                    </Badge>
+                  </Text>
+                )}
+              </>
+            )}
+          </Box>
+        </Stack>
       </Box>
     </Link>
   );

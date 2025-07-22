@@ -10,16 +10,22 @@ import ScrollToTop from './components/ScrollToTop';
 import DetalleProducto from './components/DetalleProducto';
 import PlanCanje from './pages/PlanCanje';
 import Contacto from './pages/Contacto';
+import { useEffect } from 'react';
+import { guardarCotizacionSiNoExiste } from './supabase/cotizacion.service';
+import { CotizacionProvider } from './context/CotizacionContext';
 
 
 
 function App() {
 
 
-
+useEffect(() => {
+  guardarCotizacionSiNoExiste(); 
+}, []);
 
   return (
     <ChakraProvider>
+       <CotizacionProvider>
     <Router>
     <ScrollToTop /> 
     <div>       
@@ -38,6 +44,7 @@ function App() {
           <Footer />
         </div>
     </Router>
+    </CotizacionProvider>
     </ChakraProvider>
   )
 }
