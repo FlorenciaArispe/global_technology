@@ -32,8 +32,7 @@ const ProductCard = ({ product }: any) => {
         overflow="hidden"
         bg="white"
         boxShadow="lg"
-        transition="transform 0.3s ease-in-out"
-        _hover={{ transform: 'scale(1.05)' }}
+
         cursor="pointer"
       >
         <Image
@@ -43,12 +42,12 @@ const ProductCard = ({ product }: any) => {
           height="220px"
           objectFit="cover"
         />
-        <Stack p={2} minH="125px" justify="space-between">
+        <Stack p={3} minH="125px" justify="space-between">
           <Text fontSize="15px" fontWeight="semibold" noOfLines={2}>
             {nombre}{" "}
             {product.categoria === 1 && (
               <Text  fontSize="15px" as="span"  color="gray.500">
-                - SELLADO NUEVO
+                - NUEVO SELLADO
               </Text>
             )}
             {product.categoria === 2 && (

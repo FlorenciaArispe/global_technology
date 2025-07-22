@@ -8,8 +8,10 @@ import {
   useDisclosure,
   VStack,
   Button,
+  Flex,
 } from "@chakra-ui/react";
-import { FiMenu } from "react-icons/fi";
+import { FaArrowRight } from "react-icons/fa";
+import { FiArrowRight, FiMenu } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 export const MenuMobile = () => {
@@ -25,6 +27,7 @@ export const MenuMobile = () => {
         onClick={onOpen}
         display={{ base: "block", md: "none" }}
         fontSize="24px"
+        mt={2}
       />
       <Drawer
         isOpen={isOpen}
@@ -33,11 +36,11 @@ export const MenuMobile = () => {
         size="full"
       >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent width="full">
           <DrawerCloseButton fontSize="18px" mt={1} mr={2} />
 
-          <DrawerBody>
-            <VStack spacing={3} mt={10} align="start">
+          <DrawerBody  >
+            <VStack spacing={3} mt={10} align="start"  >
               <Button
                 variant="ghost"
                 color="black"
@@ -60,6 +63,7 @@ export const MenuMobile = () => {
               </Button>
 
               <Button
+               w={"100%"}
                 variant="ghost"
                 color="black"
                 fontWeight="normal"
@@ -67,8 +71,14 @@ export const MenuMobile = () => {
                   navigate('/productos?categoria=1');
                   onClose();
                 }}
+                display={"flex"}
+                flexDirection={"row"} justifyContent="space-between" alignContent="center"
               >
-                Sellados
+               
+    <span>Sellados</span>
+    <FiArrowRight style={{ strokeWidth: 1.5, fontSize: '20px' }} />
+ 
+                
               </Button>
               <Button
                 variant="ghost"
@@ -93,6 +103,7 @@ export const MenuMobile = () => {
               >
                 Accesorios
               </Button>
+             
 
               <Button
                 variant="ghost"
@@ -102,10 +113,28 @@ export const MenuMobile = () => {
                   onClose();
                 }}
               >
-                Plan Canje
+                PLAN CANJE
               </Button>
-
-
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/politicaygarantia');
+                  onClose();
+                }}
+              >
+                Política de devolución y garantía
+              </Button>
+              <Button
+                variant="ghost"
+                color="black"
+                onClick={() => {
+                  navigate('/quienes-somos');
+                  onClose();
+                }}
+              >
+                Quienes somos
+              </Button>
               <Button
                 variant="ghost"
                 color="black"
@@ -116,6 +145,7 @@ export const MenuMobile = () => {
               >
                 Contacto
               </Button>
+              
 
             </VStack>
           </DrawerBody>

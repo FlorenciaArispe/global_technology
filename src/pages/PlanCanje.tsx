@@ -18,7 +18,7 @@ import { Link as RouterLink } from 'react-router-dom';
   
   const PlanCanje = () => {
     return (
-      <Box w="100%" px={4} mt={{ base: "65px", md: "80px" }} maxW="900px" mx="auto">
+      <Box w="100%" px={4} mt={{ base: "15px", md: "80px" }} maxW="900px" mx="auto">
         <Link
                 href="https://wa.me/message/5RCBRGOHGKPVL1"
                 isExternal

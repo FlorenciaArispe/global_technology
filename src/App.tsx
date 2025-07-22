@@ -13,6 +13,8 @@ import Contacto from './pages/Contacto';
 import { useEffect } from 'react';
 import { guardarCotizacionSiNoExiste } from './supabase/cotizacion.service';
 import { CotizacionProvider } from './context/CotizacionContext';
+import QuienesSomos from './pages/QuienesSomos';
+import PoliticaYgarantia from './pages/PoliticaYgarantia';
 
 
 
@@ -38,7 +40,10 @@ useEffect(() => {
             <Route path="/productos/:id" element={<DetalleProducto />} />
             <Route path="/contacto" element={<Contacto />} />
             <Route path="/plan-canje" element={<PlanCanje />} />
-
+            <Route path="/quienes-somos" element={<QuienesSomos />} />
+            <Route path="/politicaygarantia" element={<PoliticaYgarantia />} />
+            
+            
           </Routes>
 
           <Footer />

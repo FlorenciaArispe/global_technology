@@ -70,6 +70,8 @@ const Navbar = () => {
       zIndex={10}
       bg="white"
       p={2}
+       height="68px" // Establecer un alto fijo
+  minHeight="68px"
     >
       <Flex justify="space-between" align="center">
         {isMobile && (
